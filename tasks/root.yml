@@ -27,6 +27,8 @@
   command: service postgresql initdb
   args:
     creates: /var/lib/pgsql/data/postgresql.conf
+  environment:
+    PATH: /usr/sbin:{{ ansible_env.PATH }}
   tags:
     - candlepin
     - candlepin-root
@@ -93,18 +95,19 @@
     - candlepin
     - candlepin-root
 
-- name: Gem refreshing
-  command: gem update --system
+- name: Install gem dependencies
+  shell: "gem install {{item}}"
+  with_items:
+    - json_pure
+    - rubygems-update
+    - --user-install executable-hooks
   tags:
     - candlepin
     - candlepin-root
 
-- name: Install gem dependencies
-  gem:
-    name: "{{item}}"
-    user_install: False
-  with_items:
-    - json_pure
+- name: Gem refreshing
+  shell: |
+    gem update --system
   tags:
     - candlepin
     - candlepin-root
@@ -133,3 +136,19 @@
     - candlepin
     - candlepin-root
     - python-deps
+
+- name: Set JAVA_HOME
+  lineinfile:
+    dest: /etc/environment
+    state: present
+    regexp: '^JAVA_HOME'
+    line: 'JAVA_HOME=/usr/lib/jvm/java-1.8.0/'
+  tags:
+    - candlepin
+    - candlepin-user
+
+- name: Run Bundle install
+  shell: |
+    bundle install --without proton --system --gemfile=/vagrant/Gemfile
+  args:
+    chdir: "{{candlepin_checkout}}"

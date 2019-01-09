@@ -9,29 +9,6 @@
     - candlepin
     - candlepin-user
 
-- name: Run Bundle install
-  bundler:
-    executable: /usr/bin/bundle
-    state: present
-    user_install: true
-    chdir: "{{candlepin_checkout}}"
-    exclude_groups: proton
-  tags:
-    - candlepin
-    - candlepin-user
-  # old way
-  #command: /usr/local/bin/bundle install
-  #args:
-  #  chdir: "{{candlepin_checkout}}"
-
-- name: Add JAVA_HOME to bashrc
-  lineinfile:
-    dest: "{{candlepin_user_home}}/.bashrc"
-    line: "export JAVA_HOME=/usr/lib/jvm/java-1.8.0/"
-  tags:
-    - candlepin
-    - candlepin-user
-
 - name: Check for zshrc
   stat:
     path: "{{candlepin_user_home}}/.zshrc"
@@ -50,7 +27,7 @@
     - candlepin-user
 
 - name: Perform a clean build of the source tree
-  command: ~/bin/buildr clean test=no package
+  command: buildr clean test=no package
   args:
     chdir: "{{candlepin_checkout}}"
     creates: "{{candlepin_checkout}}/server/target/*.zip"
