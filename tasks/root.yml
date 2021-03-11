@@ -18,16 +18,7 @@
 - name: Add remote debugging config to tomcat
   lineinfile:
     dest: /etc/tomcat/tomcat.conf
-    line: "JAVA_OPTS=-Xdebug -Xrunjdwp:transport=dt_socket,address=*:8000,server=y,suspend=n"
-  tags:
-    - candlepin
-    - candlepin-root
-
-- name: Set Java-11 as default for tomcat
-  lineinfile:
-    dest: /etc/tomcat/tomcat.conf
-    regexp: "JAVA_HOME"
-    line: "JAVA_HOME=\"/usr/lib/jvm/jre-11\""
+    line: "JAVA_OPTS=-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
   tags:
     - candlepin
     - candlepin-root
