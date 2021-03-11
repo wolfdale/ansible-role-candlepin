@@ -27,7 +27,7 @@
 - name: Add JAVA_HOME to bashrc
   lineinfile:
     dest: "{{candlepin_user_home}}/.bashrc"
-    line: "export JAVA_HOME=/usr/lib/jvm/java-11/"
+    line: "export JAVA_HOME=/usr/lib/jvm/java-1.8.0/"
   tags:
     - candlepin
     - candlepin-user
@@ -43,7 +43,7 @@
 - name: Add JAVA_HOME to zshrc
   lineinfile:
     dest: "{{candlepin_user_home}}/.zshrc"
-    line: "export JAVA_HOME=/usr/lib/jvm/java-11/"
+    line: "export JAVA_HOME=/usr/lib/jvm/java-1.8.0/"
   when: zshrc_file.stat.exists
   tags:
     - candlepin
@@ -57,7 +57,7 @@
     # creates: /etc/candlepin/candlepin.conf
   environment:
     PATH: "{{ ansible_env.PATH }}:{{ candlepin_user_home }}/bin"
-    JAVA_HOME: "/usr/lib/jvm/java-11/"
+    JAVA_HOME: "/usr/lib/jvm/java-1.8.0/"
     TERM: "xterm-256color"
   tags:
     - candlepin

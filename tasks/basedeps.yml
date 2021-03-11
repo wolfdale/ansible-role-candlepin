@@ -50,7 +50,6 @@
       - python-requests
       - expect
       - java-1.8.0-openjdk-devel
-      - java-11-openjdk-devel
     state: present
   tags:
     - candlepin-basedeps
@@ -65,8 +64,3 @@
     - candlepin
     - system_update
 
-- name: Set Java version (Default Java 11)
-  command: bash -c 'sudo update-alternatives --set java /usr/lib/jvm/java-11-openjdk-*/bin/java'
-
-- name: Set Java compiler version (Default Java 11)
-  command: bash -c 'sudo update-alternatives --set javac /usr/lib/jvm/java-11-openjdk-11*/bin/javac'
